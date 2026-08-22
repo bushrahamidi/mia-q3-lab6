@@ -8,6 +8,12 @@
 
 **Input**: User description: "Support for Overdue Todo Items - Users need a clear, visual way to identify which todos have not been completed by their due date, so they can prioritize their work and quickly see which tasks are past their due date without manually checking dates against today's date. Must include automated tests covering the overdue determination logic and its display, following existing Jest patterns."
 
+## Clarifications
+
+### Session 2026-08-22
+
+- Q: How should the overdue indication be shown while a todo is in inline edit mode? → A: Add a small overdue badge/label above the edit form's input fields
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - See overdue todos at a glance (Priority: P1)
@@ -50,11 +56,11 @@ As a todo application user, I want an overdue todo to remain identifiable while 
 
 **Why this priority**: Consistent status visibility improves editing confidence after the core list experience is delivered.
 
-**Independent Test**: Open an incomplete past-due todo in its editable context and verify that the overdue indication remains visible.
+**Independent Test**: Open an incomplete past-due todo in its editable context and verify that a small overdue badge/label appears above the edit form's input fields.
 
 **Acceptance Scenarios**:
 
-1. **Given** an incomplete overdue todo, **When** the user opens it for editing, **Then** the overdue indication or an equivalent visual cue remains visible.
+1. **Given** an incomplete overdue todo, **When** the user opens it for editing, **Then** a small overdue badge/label is displayed above the edit form's input fields.
 
 ### Edge Cases
 
@@ -76,6 +82,7 @@ As a todo application user, I want an overdue todo to remain identifiable while 
 - **FR-006**: The system MUST re-evaluate overdue status from the current local calendar date whenever the todo list is displayed, without requiring stored todo data to change.
 - **FR-007**: The system MUST remove the overdue indication immediately when a previously overdue todo is completed or its due date is changed to today, a future date, or no date.
 - **FR-008**: The overdue determination MUST be reusable and independently testable, and automated tests MUST cover both the determination behavior and its visual display across the acceptance scenarios.
+- **FR-009**: The system MUST display a small overdue badge/label above the edit form's input fields when an incomplete, overdue todo is opened for inline editing.
 
 ### Key Entities
 
