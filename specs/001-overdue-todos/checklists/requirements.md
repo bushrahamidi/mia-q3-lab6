@@ -31,4 +31,4 @@
 
 ## Notes
 
-- All checklist items passed on first validation pass. No [NEEDS CLARIFICATION] markers were needed: due-date semantics, derived (non-persisted) overdue status, and visual styling all had clear, low-risk defaults grounded in existing `docs/functional-requirements.md` and `docs/ui-guidelines.md`.
+- All checklist items passed on initial validation. The specification defines the overdue boundary, excludes completed and undated todos, bounds the scope, and provides measurable outcomes and automated-test coverage expectations.
