@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import isOverdue from '../utils/overdue';
 
 function TodoCard({ todo, onToggle, onEdit, onDelete, isLoading }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -66,6 +67,11 @@ function TodoCard({ todo, onToggle, onEdit, onDelete, isLoading }) {
     return (
       <div className="todo-card todo-card-edit">
         <div className="edit-form">
+          {isOverdue(todo) && (
+            <span className="overdue-badge" role="status">
+              ⚠ Overdue
+            </span>
+          )}
           <input
             type="text"
             value={editTitle}
@@ -123,6 +129,11 @@ function TodoCard({ todo, onToggle, onEdit, onDelete, isLoading }) {
           <p className="todo-due-date">
             Due: {formatDate(todo.dueDate)}
           </p>
+        )}
+        {isOverdue(todo) && (
+          <span className="overdue-badge" role="status">
+            ⚠ Overdue
+          </span>
         )}
       </div>
 

@@ -30,7 +30,7 @@ description: "Task list for Support for Overdue Todo Items"
 
 **Purpose**: Prepare the new module location for the overdue utility
 
-- [ ] T001 Create `packages/frontend/src/utils/` directory with a `__tests__/` subfolder (new location for the derived-overdue utility; no other project init or new dependencies are needed since this feature adds no libraries)
+- [X] T001 Create `packages/frontend/src/utils/` directory with a `__tests__/` subfolder (new location for the derived-overdue utility; no other project init or new dependencies are needed since this feature adds no libraries)
 
 ---
 
@@ -40,8 +40,8 @@ description: "Task list for Support for Overdue Todo Items"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 [P] Write unit tests for `isOverdue` in `packages/frontend/src/utils/__tests__/overdue.test.js` covering the contract table from [contracts/isOverdue.md](./contracts/isOverdue.md): no due date → false, past date + completed → false, past date + incomplete → true, due today + incomplete → false, future date + incomplete → false
-- [ ] T003 Implement `isOverdue(todo, referenceDate = new Date())` as a pure function in `packages/frontend/src/utils/overdue.js` per the contract (local calendar-date comparison, no mutation, no throw on missing fields) (depends on T002 to define expected behavior; makes T002 pass)
+- [X] T002 [P] Write unit tests for `isOverdue` in `packages/frontend/src/utils/__tests__/overdue.test.js` covering the contract table from [contracts/isOverdue.md](./contracts/isOverdue.md): no due date → false, past date + completed → false, past date + incomplete → true, due today + incomplete → false, future date + incomplete → false
+- [X] T003 Implement `isOverdue(todo, referenceDate = new Date())` as a pure function in `packages/frontend/src/utils/overdue.js` per the contract (local calendar-date comparison, no mutation, no throw on missing fields) (depends on T002 to define expected behavior; makes T002 pass)
 
 **Checkpoint**: Foundation ready — `isOverdue` is implemented and unit-tested; user story implementation can now begin
 
@@ -55,12 +55,12 @@ description: "Task list for Support for Overdue Todo Items"
 
 ### Tests for User Story 1
 
-- [ ] T004 [P] [US1] Extend `packages/frontend/src/components/__tests__/TodoCard.test.js` with read-only card view assertions: overdue badge renders for an incomplete past-due todo, and does NOT render for a completed past-due, today-due, future-due, or undated todo
+- [X] T004 [P] [US1] Extend `packages/frontend/src/components/__tests__/TodoCard.test.js` with read-only card view assertions: overdue badge renders for an incomplete past-due todo, and does NOT render for a completed past-due, today-due, future-due, or undated todo
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Import `isOverdue` and conditionally render an "Overdue" badge in the read-only card view of `packages/frontend/src/components/TodoCard.js` (depends on T003)
-- [ ] T006 [US1] Add overdue badge styles to `packages/frontend/src/styles/theme.css` reusing the existing `--danger-color` token, with a text/icon cue (not color-only) and WCAG AA contrast in both light and dark themes
+- [X] T005 [US1] Import `isOverdue` and conditionally render an "Overdue" badge in the read-only card view of `packages/frontend/src/components/TodoCard.js` (depends on T003)
+- [X] T006 [US1] Add overdue badge styles reusing the existing `--danger-color` token, with a text/icon cue (not color-only) and WCAG AA contrast in both light and dark themes (implemented in `packages/frontend/src/App.css` alongside the other `.todo-card` component styles, matching existing convention, rather than `theme.css` which holds only design tokens)
 
 **Checkpoint**: User Story 1 is fully functional and independently testable — this is the shippable MVP
 
@@ -74,12 +74,12 @@ description: "Task list for Support for Overdue Todo Items"
 
 ### Tests for User Story 2
 
-- [ ] T007 [P] [US2] Add day-rollover tests to `packages/frontend/src/utils/__tests__/overdue.test.js`: a todo due "today" is not overdue against that date but becomes overdue when `referenceDate` advances to the next calendar day
-- [ ] T008 [P] [US2] Add tests to `packages/frontend/src/components/__tests__/TodoCard.test.js` verifying the overdue badge disappears immediately after toggling an overdue todo complete, and after editing its due date to today, a future date, or no date
+- [X] T007 [P] [US2] Add day-rollover tests to `packages/frontend/src/utils/__tests__/overdue.test.js`: a todo due "today" is not overdue against that date but becomes overdue when `referenceDate` advances to the next calendar day
+- [X] T008 [P] [US2] Add tests to `packages/frontend/src/components/__tests__/TodoCard.test.js` verifying the overdue badge disappears immediately after toggling an overdue todo complete, and after editing its due date to today, a future date, or no date
 
 ### Implementation for User Story 2
 
-- [ ] T009 [US2] Verify `TodoCard.js` re-renders overdue state immediately from its existing `onToggle`/`onEdit` state flow (no stored overdue field, no timers); adjust only if T007/T008 reveal a gap in `packages/frontend/src/components/TodoCard.js`
+- [X] T009 [US2] Verify `TodoCard.js` re-renders overdue state immediately from its existing `onToggle`/`onEdit` state flow (no stored overdue field, no timers); adjust only if T007/T008 reveal a gap in `packages/frontend/src/components/TodoCard.js` (verified via T008 — no gap found, `isOverdue(todo)` is recomputed on every render from props with no stored state)
 
 **Checkpoint**: User Stories 1 and 2 both work independently — overdue status never goes stale
 
@@ -93,11 +93,11 @@ description: "Task list for Support for Overdue Todo Items"
 
 ### Tests for User Story 3
 
-- [ ] T010 [P] [US3] Add a test to `packages/frontend/src/components/__tests__/TodoCard.test.js` confirming the overdue badge renders above the edit form's title/due-date inputs when an incomplete, overdue todo is opened for inline editing, and does not render when editing a non-overdue todo
+- [X] T010 [P] [US3] Add a test to `packages/frontend/src/components/__tests__/TodoCard.test.js` confirming the overdue badge renders above the edit form's title/due-date inputs when an incomplete, overdue todo is opened for inline editing, and does not render when editing a non-overdue todo
 
 ### Implementation for User Story 3
 
-- [ ] T011 [US3] Render the overdue badge above the edit-form inputs in the `isEditing` branch of `packages/frontend/src/components/TodoCard.js`, reusing the badge markup/styles from T005/T006
+- [X] T011 [US3] Render the overdue badge above the edit-form inputs in the `isEditing` branch of `packages/frontend/src/components/TodoCard.js`, reusing the badge markup/styles from T005/T006
 
 **Checkpoint**: All user stories are independently functional — overdue is visible in both list and edit views and stays current
 
@@ -107,8 +107,8 @@ description: "Task list for Support for Overdue Todo Items"
 
 **Purpose**: Final validation across all stories
 
-- [ ] T012 [P] Run `npm run test:frontend` and `npm test` from repo root; fix any regressions across `packages/frontend/src/utils/__tests__/overdue.test.js` and `packages/frontend/src/components/__tests__/TodoCard.test.js`
-- [ ] T013 [P] Perform the manual validation steps in [quickstart.md](./quickstart.md), including toggling dark/light theme to confirm the badge remains legible and non-color-only in both
+- [X] T012 [P] Run `npm run test:frontend` and `npm test` from repo root; fix any regressions across `packages/frontend/src/utils/__tests__/overdue.test.js` and `packages/frontend/src/components/__tests__/TodoCard.test.js` (70 frontend + 27 backend tests pass, no regressions; verified badge text/border contrast against WCAG AA in both themes)
+- [ ] T013 [P] Perform the manual validation steps in [quickstart.md](./quickstart.md), including toggling dark/light theme to confirm the badge remains legible and non-color-only in both (requires a human running the app in a browser — not automatable in this session; see Completion Report for guidance)
 
 ---
 

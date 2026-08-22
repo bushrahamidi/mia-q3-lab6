@@ -99,4 +99,94 @@ describe('TodoCard Component', () => {
     
     expect(screen.queryByText(/Due:/)).not.toBeInTheDocument();
   });
+
+  describe('Overdue indication', () => {
+    const yesterday = '2020-01-01';
+    const today = '2020-01-02';
+    const tomorrow = '2020-01-03';
+    const referenceDate = new Date(2020, 0, 2); // 2020-01-02, matches `today`
+
+    beforeEach(() => {
+      jest.useFakeTimers().setSystemTime(referenceDate);
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('shows the overdue badge for an incomplete past-due todo', () => {
+      const todo = { ...mockTodo, dueDate: yesterday, completed: 0 };
+      render(<TodoCard todo={todo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.getByText(/Overdue/)).toBeInTheDocument();
+    });
+
+    it('does not show the overdue badge for a completed past-due todo', () => {
+      const todo = { ...mockTodo, dueDate: yesterday, completed: 1 };
+      render(<TodoCard todo={todo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('does not show the overdue badge for a todo due today', () => {
+      const todo = { ...mockTodo, dueDate: today, completed: 0 };
+      render(<TodoCard todo={todo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('does not show the overdue badge for a todo due in the future', () => {
+      const todo = { ...mockTodo, dueDate: tomorrow, completed: 0 };
+      render(<TodoCard todo={todo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('does not show the overdue badge for a todo without a due date', () => {
+      const todo = { ...mockTodo, dueDate: null, completed: 0 };
+      render(<TodoCard todo={todo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('removes the overdue badge immediately after the todo is rendered as completed', () => {
+      const todo = { ...mockTodo, dueDate: yesterday, completed: 0 };
+      const { rerender } = render(<TodoCard todo={todo} {...mockHandlers} isLoading={false} />);
+      expect(screen.getByText(/Overdue/)).toBeInTheDocument();
+
+      rerender(<TodoCard todo={{ ...todo, completed: 1 }} {...mockHandlers} isLoading={false} />);
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('removes the overdue badge immediately after the due date is edited to today', () => {
+      const todo = { ...mockTodo, dueDate: yesterday, completed: 0 };
+      const { rerender } = render(<TodoCard todo={todo} {...mockHandlers} isLoading={false} />);
+      expect(screen.getByText(/Overdue/)).toBeInTheDocument();
+
+      rerender(<TodoCard todo={{ ...todo, dueDate: today }} {...mockHandlers} isLoading={false} />);
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('shows the overdue badge above the edit form inputs when editing an incomplete, overdue todo', () => {
+      const todo = { ...mockTodo, dueDate: yesterday, completed: 0 };
+      render(<TodoCard todo={todo} {...mockHandlers} isLoading={false} />);
+
+      fireEvent.click(screen.getByLabelText(/Edit/));
+
+      const badge = screen.getByText(/Overdue/);
+      const titleInput = screen.getByLabelText('Edit todo title');
+      expect(badge).toBeInTheDocument();
+      // eslint-disable-next-line no-bitwise
+      expect(badge.compareDocumentPosition(titleInput) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it('does not show the overdue badge when editing a non-overdue todo', () => {
+      const todo = { ...mockTodo, dueDate: tomorrow, completed: 0 };
+      render(<TodoCard todo={todo} {...mockHandlers} isLoading={false} />);
+
+      fireEvent.click(screen.getByLabelText(/Edit/));
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+  });
 });

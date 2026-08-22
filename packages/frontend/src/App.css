@@ -366,6 +366,22 @@ p {
   color: var(--text-secondary);
 }
 
+.overdue-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 var(--space-xs) 0;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  /* text uses --text-primary (not --danger-color) so the badge label keeps WCAG AA
+     text contrast in dark mode; the danger token still marks the border/icon cue */
+  color: var(--text-primary);
+  border: 1.5px solid var(--danger-color);
+  border-radius: var(--radius-sm);
+}
+
+
 .todo-actions {
   display: flex;
   gap: 8px;
